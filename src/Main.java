@@ -256,7 +256,6 @@ public class Main {
                 System.out.println("Origin city: " + flight.getOriginCity());
                 System.out.println("Destiny city: " + flight.getDestinyCity());
                 System.out.println("Prize: $" + flight.getPrize());
-                System.out.println("");
             }
         }
     }
