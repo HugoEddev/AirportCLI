@@ -1,5 +1,7 @@
 Airport ATM Console Application
-This Java-based console application models a simple airport management system. It allows you to:
+This Java-based console application models a simple airport management system. 
+
+It allows you to:
 
 Initialize Airports
 Create and configure both public and private airports, each with its own set of airlines or sponsors.
