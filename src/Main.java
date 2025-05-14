@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Main {
     // static because is global
     static Scanner input = new Scanner(System.in);
-    final static int num = 4; // Number of airports is a constant
+    final static int num = 5; // Number of airports is a constant
     static Airport[] airports = new Airport[num];
 
     public static void main(String[] args) {
@@ -12,40 +12,40 @@ public class Main {
     }
 
     public static void addDataToAirport(Airport[] aero){
+        // Airport 0 ok
         aero[0] = new PublicAirport("Jorge Chavez", "Lima", "Peru", 80000);
-        // COMPANY - there are a lot of public and private companies into the airports
         aero[0].addCompany(new Company("AeroPeru"));
         aero[0].addCompany(new Company("LATAM"));
+        // flights and passengers...
 
-        // FLIGHTS -> THESE FLIGHTS HAVE TO BE INSIDE THIS COMPANIES
-        aero[0].getCompany("AeroPeru").addFlight(new Flight("IB20", "Lima", "Mexico", 150.90, 150));
-        aero[0].getCompany("AeroPeru").addFlight(new Flight("IB21", "Lima", "Buenos Aires", 180.88, 120));
-        aero[0].getCompany("LATAM").addFlight(new Flight("FC12", "Lima", "Londrees", 500.90, 180));
+        // --- Airport ---
+        aero[1] = new PublicAirport("Heathrow", "Londres", "Reino Unido", 90000);
+        aero[1].addCompany(new Company("AirEurope"));                      // ← aquí
+        aero[1].getCompany("AirEurope")
+                .addFlight(new Flight("AE50", "Madrid", "Barcelona", 150.0, 20));
+        aero[1].getCompany("AirEurope")
+                .getFlight("AE50")
+                .addPassenger(new Passenger("Draken", "30Bjhp", "Japanese"));
 
-        // PASSENGERS THAT WILL BE ON EACH FLIGHT
-        // To insert passengers, we must first obtain the flight
-        aero[0].getCompany("AeroPeru").getFlight("IB20").addPassenger(new Passenger("Hugo", "20Bghp", "Mexican"));
-        aero[0].getCompany("AeroPeru").getFlight("IB20").addPassenger(new Passenger("Alejandro", "30GCP", "Peruvian"));
-        aero[0].getCompany("LATAM").getFlight("FC12").addPassenger(new Passenger("Raul", "JH21K", "Argentine"));
-
-        aero[1].getCompany("AirEurope").addFlight(new Flight("AE50", "Madrid", "Barcelona", 150.0, 20));
-        aero[1].getCompany("AirEurope").getFlight("AE50").addPassenger(new Passenger("Draken", "30Bjhp", "Japanese"));
-
+        // Airport 2
         aero[2] = new PublicAirport("El Dorado", "Bogota", "Colombia", 50000);
         aero[2].addCompany(new Company("AirColombia"));
         aero[2].addCompany(new Company("Ariadna"));
+        // flights and passengers...
 
-        aero[2].getCompany("AirColombia").addFlight(new Flight("ZA45", "Bogota", "Guadalajara", 200.90, 200));
-        aero[2].getCompany("Ariadna").addFlight(new Flight("ZA46", "Bogota", "Japan", 900.00, 300));
+        // --- Airport 3 ---
+        aero[3] = new PublicAirport("Benito Juárez", "CDMX", "México", 120000);
+        aero[3].addCompany(new Company("Volaris"));                        // ← aquí
+        aero[3].addCompany(new Company("Aeromexico"));                     // ← y aquí
+        aero[3].getCompany("Volaris")
+                .addFlight(new Flight("MI64", "CDMX", "Tokyo", 800.90, 500));
+        aero[3].getCompany("Aeromexico")
+                .addFlight(new Flight("MI65", "CDMX", "Seul", 900.00, 500));
 
-        aero[2].getCompany("AirColombia").getFlight("ZA45").addPassenger(new Passenger("Sasuke", "20Konoha", "Japanese"));
-        aero[2].getCompany("Ariadna").getFlight("ZA46").addPassenger(new Passenger("Inosuke", "30Tierra", "Chilean"));
-
-        aero[3].getCompany("Volaris").addFlight(new Flight("MI64", "CDMX", "Tokyo", 800.90, 500));
-        aero[3].getCompany("Aeromexico").addFlight(new Flight("MI65", "CDMX", "Seul", 900.00, 500));
-
-        aero[3].getCompany("Volaris").getFlight("MI64").addPassenger(new Passenger("Ulises", "10SXA", "Mexican"));
-        aero[3].getCompany("AeroMexico").getFlight("MI65").addPassenger(new Passenger("Renata", "30LAR", "Mexican"));
+        aero[4] = new PrivateAirport("Pearson", "Toronto", "Canada");
+        PrivateAirport priv3 = (PrivateAirport) aero[4];
+        priv3.addCompany("Grupo VIP");
+        priv3.addCompany("Empresa X");
     }
 
     public static void menu(){
@@ -152,23 +152,19 @@ public class Main {
     }
 
     public static void showSponsorship(Airport[] airports){
-        String[] companies;
-
         for (Airport airport : airports) {
-            // Check if the airport is private or public
             if (airport instanceof PrivateAirport) {
-                System.out.println("Private Airport: " + airport.getName());
-                //polymorphism in all its splendor
-                companies = ((PrivateAirport) airport).getCompaniesList();
+                PrivateAirport priv = (PrivateAirport) airport;
+                System.out.println("Private Airport: " + priv.getName());
 
-                // Show all companies
-                for (String company : companies) {
-                    System.out.println(company);
+                for (int i = 0; i < priv.getCompanyNumber(); i++) {
+                    System.out.println(priv.getCompaniesList()[i]);
                 }
-
+                System.out.println();
             }
         }
     }
+
 
     // We want to return to an airport exactly the one we are looking for.
     // We pass the name of the aero we want to search for and the list.
@@ -256,6 +252,7 @@ public class Main {
                 System.out.println("Origin city: " + flight.getOriginCity());
                 System.out.println("Destiny city: " + flight.getDestinyCity());
                 System.out.println("Prize: $" + flight.getPrize());
+                System.out.println("");
             }
         }
     }

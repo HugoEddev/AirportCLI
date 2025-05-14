@@ -56,19 +56,13 @@ public class Airport {
         return companies[i];
     }
 
-    public Company getCompany(String name){
-        boolean found = false;
-        int i=0;
-        Company c = null;
-
-        while((!found)&&(i<companies.length)){
-            if(name.equals(companies[i].getName())){
-                found = true;
-                c = companies[i]; // so that the while loop ends at some point
+    public Company getCompany(String name) {
+        for (int i = 0; i < companyNum; i++) {
+            Company c = companies[i];
+            if (c != null && c.getName().equals(name)) {
+                return c;
             }
-            i++;
         }
-        return c;
+        return null;  // si no se encuentra
     }
-
 }
